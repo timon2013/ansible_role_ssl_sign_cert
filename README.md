@@ -18,6 +18,7 @@ meta/main.yml
 
 Role Variables
 --------------
+
 String Bool
 Default variables are in defaults directory.
 
