@@ -1,0 +1,5 @@
+---
+- hosts: "{{ server }}" 
+  remote_user: root
+  roles:
+    - timon2013.ansible_role_ssl_sign_cert

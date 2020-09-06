@@ -1,0 +1,5 @@
+---
+- name: Opendistro
+  hosts: all
+  roles:
+    - role: ansible_role_ssl_sign_cert

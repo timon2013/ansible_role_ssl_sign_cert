@@ -1,0 +1,19 @@
+---
+ssl_sign_cert_name: ansible
+ssl_sign_cert_owner: root
+ssl_sign_cert_group: root
+ssl_sign_cert_csr_path: /etc/ssl/ansible/csr
+ssl_sign_cert_crt_path: /etc/ssl/ansible/certs
+ssl_sign_cert_key_path: /etc/ssl/ansible/private
+packages_openssl:
+  - python-cryptography
+
+ssl_sign_cert_key_type: RSA
+ssl_sign_cert_key_size: 4096
+ssl_sign_cert_csr_digest: sha512
+ssl_sign_cert_email: admin@localhost
+ssl_sign_cert_selfsigned_not_after: "+3650d"
+
+ssl_sign_cert_get_to_local: false
+ssl_sign_cert_local_path_crt: "~/{{ inventory_hostname }}-{{ ssl_sign_cert_name }}.crt"
+ssl_sign_cert_local_path_key: "~/{{ inventory_hostname }}-{{ ssl_sign_cert_name }}.key"

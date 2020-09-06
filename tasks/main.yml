@@ -1,0 +1,64 @@
+---
+- name: Create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ ssl_sign_cert_owner }}"
+    group: "{{ ssl_sign_cert_group }}"
+  loop:
+    - "{{ ssl_sign_cert_csr_path }}"
+    - "{{ ssl_sign_cert_crt_path }}"
+    - "{{ ssl_sign_cert_key_path }}"
+
+- name: Install items
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - "{{ packages_openssl }}"
+
+
+- name: Generate OpenSSL private key
+  openssl_privatekey:
+    path: "{{ ssl_sign_cert_key_path }}/{{ ssl_sign_cert_name }}.key"
+    type: "{{ ssl_sign_cert_key_type }}"
+    size: "{{ ssl_sign_cert_key_size }}"
+    state: present
+    mode: 0640
+    owner: "{{ ssl_sign_cert_owner }}"
+    group: "{{ ssl_sign_cert_group }}"
+
+- name: Generate an OpenSSL Certificate Signing Request
+  openssl_csr:
+    path: "{{ ssl_sign_cert_csr_path }}/{{ ssl_sign_cert_name }}.csr"
+    privatekey_path: "{{ ssl_sign_cert_key_path }}/{{ ssl_sign_cert_name }}.key"
+    digest: "{{ ssl_sign_cert_csr_digest }}"
+    email_address: "{{ ssl_sign_cert_email }}"
+    common_name: "{{ ssl_sign_cert_name }}"
+    subject_alt_name: "DNS:{{ ssl_sign_cert_name }}"
+    state: present
+
+- name: Generate self-signed OpenSSL certificate
+  openssl_certificate:
+    path: "{{ ssl_sign_cert_crt_path }}/{{ ssl_sign_cert_name }}.crt"
+    privatekey_path: "{{ ssl_sign_cert_key_path }}/{{ ssl_sign_cert_name }}.key"
+    csr_path: "{{ ssl_sign_cert_csr_path }}/{{ ssl_sign_cert_name }}.csr"
+    provider: selfsigned
+    selfsigned_digest: "{{ ssl_sign_cert_csr_digest }}"
+    selfsigned_not_after: "{{ ssl_sign_cert_selfsigned_not_after }}"
+    state: present
+
+- name: Get certificate to local
+  fetch:
+    src: "{{ ssl_sign_cert_crt_path }}/{{ ssl_sign_cert_name }}.crt"
+    dest: "{{ ssl_sign_cert_local_path_crt }}"
+    flat: true
+  when: ssl_sign_cert_get_to_local
+
+- name: Get key to local
+  fetch:
+    src: "{{ ssl_sign_cert_key_path }}/{{ ssl_sign_cert_name }}.key"
+    dest: "{{ ssl_sign_cert_local_path_key }}"
+    flat: true
+  when: ssl_sign_cert_get_to_local
