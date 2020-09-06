@@ -9,9 +9,6 @@ Master branch:
 Dev Branch:
 [![Build Status](https://travis-ci.org/timon2013/ansible_role_ssl_sign_cert.svg?branch=dev)](https://travis-ci.org/timon2013/ansible_role_ssl_sign_cert)
 
-timon_first Branch:
-[![Build Status](https://travis-ci.org/timon2013/ansible_role_ssl_sign_cert.svg?branch=dev)](https://travis-ci.org/timon2013/ansible_role_ssl_sign_cert)
-
 Requirements
 ------------
 
