@@ -1,2 +1,2 @@
 ---
-  - name: ansible-galaxy install timon2013.ansible_role_ssl_sign_cert
+- name: ansible-galaxy install timon2013.ansible_role_ssl_sign_cert
