@@ -12,6 +12,7 @@ install:
 # Install test dependencies.
   - pip install molecule
   - pip install docker
+  - pip install ansible-lint
 # - pip install 'molecule<3' docker
 
 script:
